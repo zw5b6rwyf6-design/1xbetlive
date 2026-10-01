@@ -1,232 +1,467 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cricket Demo Panel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LaserLive247 Admin</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f1217;
-      color: #fff;
-    }
-
-    header {
-      background: #181d24;
-      padding: 18px;
-      text-align: center;
-      border-bottom: 1px solid #2a3039;
-    }
-
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 24px;
-    }
-
-    .demo-label {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 5px;
-      background: #332b12;
-      color: #ffd54a;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    main {
-      max-width: 650px;
-      margin: auto;
-      padding: 15px;
-    }
-
-    .card {
-      background: #181d24;
-      border: 1px solid #272d36;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 15px;
-    }
-
-    .wallet {
-      text-align: center;
-    }
-
-    .wallet small {
-      color: #9ba3af;
-    }
-
-    .balance {
-      font-size: 30px;
-      font-weight: bold;
-      margin-top: 7px;
-    }
-
-    .match-title {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .muted {
-      color: #9ba3af;
-      font-size: 13px;
-    }
-
-    .teams {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .team {
-      flex: 1;
-      background: #222831;
-      border: 1px solid #343b46;
-      border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .team-name {
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .odds {
-      font-size: 19px;
-      font-weight: bold;
-    }
-
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      padding: 11px;
-      margin-top: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      background: #fff;
-      color: #111;
-    }
-
-    .bet {
-      background: #222831;
-      border-radius: 9px;
-      padding: 12px;
-      margin-top: 9px;
-    }
-
-    .empty {
-      color: #8e96a3;
-      text-align: center;
-      padding: 12px;
-    }
-
-    footer {
-      text-align: center;
-      color: #777f8c;
-      font-size: 11px;
-      padding: 20px;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0f14;
+  color:#fff
+}
+button,input{
+  font:inherit
+}
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+.box{
+  width:100%;
+  max-width:390px;
+  background:#151a21;
+  border:1px solid #252c35;
+  border-radius:18px;
+  padding:25px
+}
+.logo{
+  text-align:center;
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:5px
+}
+.sub{
+  text-align:center;
+  color:#8993a1;
+  margin-bottom:25px
+}
+input{
+  width:100%;
+  padding:14px;
+  margin:7px 0;
+  border-radius:9px;
+  border:1px solid #303844;
+  background:#0d1117;
+  color:white;
+  outline:none
+}
+.btn{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:0;
+  border-radius:9px;
+  background:#28a745;
+  color:white;
+  font-weight:bold
+}
+.error{
+  color:#ff7070;
+  margin-top:12px;
+  font-size:14px
+}
+#app{display:none}
+header{
+  padding:17px;
+  background:#151a21;
+  border-bottom:1px solid #272e37;
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+header b{font-size:20px}
+.logout{
+  background:#252c35;
+  color:white;
+  border:0;
+  padding:9px 12px;
+  border-radius:8px
+}
+main{
+  max-width:850px;
+  margin:auto;
+  padding:15px
+}
+.card{
+  background:#151a21;
+  border:1px solid #272e37;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:15px
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px
+}
+.stat{
+  background:#202630;
+  border-radius:10px;
+  padding:15px;
+  text-align:center
+}
+.stat strong{
+  display:block;
+  font-size:23px;
+  margin-top:5px
+}
+.row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:10px
+}
+.row input{margin:0}
+.smallbtn{
+  padding:10px 12px;
+  border:0;
+  border-radius:7px;
+  background:#303844;
+  color:white
+}
+.match{
+  background:#202630;
+  border-radius:10px;
+  padding:14px;
+  margin-top:10px
+}
+.green{color:#48d878}
+.red{color:#ff6565}
+.muted{color:#8993a1;font-size:13px}
+.badge{
+  padding:4px 8px;
+  border-radius:20px;
+  background:#26372c;
+  color:#6de58e;
+  font-size:11px
+}
+.demo{
+  text-align:center;
+  color:#ffd34e;
+  font-size:11px;
+  margin-top:20px
+}
+@media(max-width:500px){
+  .stats{grid-template-columns:1fr}
+  .row{flex-wrap:wrap}
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>🏏 Cricket Demo Panel</h1>
-    <div class="demo-label">DEMO • NO REAL MONEY</div>
-  </header>
+<div class="login" id="login">
+  <div class="box">
+    <div class="logo">🏏 LaserLive247</div>
+    <div class="sub">Admin Dashboard</div>
 
-  <main>
+    <input id="email" type="email" placeholder="Admin email">
+    <input id="password" type="password" placeholder="Password">
 
-    <div class="card wallet">
-      <small>Virtual Demo Wallet</small>
-      <div class="balance" id="balance">₹10,000</div>
+    <button class="btn" onclick="loginUser()">LOGIN</button>
+
+    <div id="loginError" class="error"></div>
+
+    <div class="demo">
+      SPORTS MANAGEMENT PLATFORM
+    </div>
+  </div>
+</div>
+
+
+<div id="app">
+
+<header>
+  <b>🏏 LaserLive247 Admin</b>
+  <button class="logout" onclick="logout()">Logout</button>
+</header>
+
+<main>
+
+<div class="card">
+  <h2>Dashboard</h2>
+  <div class="stats">
+    <div class="stat">
+      Users
+      <strong id="userCount">0</strong>
     </div>
 
-    <div class="card">
-      <div class="match-title">🇮🇳 India vs Australia 🇦🇺</div>
-      <div class="muted">Demo Match • T20</div>
+    <div class="stat">
+      Matches
+      <strong id="matchCount">0</strong>
+    </div>
 
-      <div class="teams">
+    <div class="stat">
+      Status
+      <strong class="green">ONLINE</strong>
+    </div>
+  </div>
+</div>
 
-        <div class="team">
-          <div class="team-name">India</div>
-          <div class="odds">1.80</div>
-          <button onclick="placeDemoBet('India', 1.80)">
-            Demo Bet
-          </button>
-        </div>
 
-        <div class="team">
-          <div class="team-name">Australia</div>
-          <div class="odds">2.10</div>
-          <button onclick="placeDemoBet('Australia', 2.10)">
-            Demo Bet
-          </button>
-        </div>
+<div class="card">
+  <h2>➕ Add Match</h2>
 
+  <input id="teamA" placeholder="Team A">
+  <input id="teamB" placeholder="Team B">
+
+  <button class="btn" onclick="addMatch()">
+    Add Match
+  </button>
+</div>
+
+
+<div class="card">
+  <h2>🏏 Matches</h2>
+  <div id="matches">
+    <div class="muted">No matches yet.</div>
+  </div>
+</div>
+
+
+<div class="card">
+  <h2>👥 Users</h2>
+  <div id="users">
+    <div class="muted">Loading users...</div>
+  </div>
+</div>
+
+</main>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL = "https://zhgocopnpbdrxarocaas.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ax4CulCYABugHSB6RBv3kA_a49Zm257";
+
+const client = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+async function loginUser(){
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const error =
+    document.getElementById("loginError");
+
+  error.textContent = "";
+
+  if(!email || !password){
+    error.textContent =
+      "Email aur password enter karo.";
+    return;
+  }
+
+  const {error:loginError} =
+    await client.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(loginError){
+    error.textContent = loginError.message;
+    return;
+  }
+
+  showApp();
+}
+
+
+async function showApp(){
+
+  document.getElementById("login").style.display="none";
+  document.getElementById("app").style.display="block";
+
+  await loadUsers();
+  await loadMatches();
+}
+
+
+async function logout(){
+
+  await client.auth.signOut();
+
+  document.getElementById("app").style.display="none";
+  document.getElementById("login").style.display="flex";
+}
+
+
+async function loadUsers(){
+
+  const {data,error} =
+    await client
+      .from("profiles")
+      .select("id,username,full_name,role,status,created_at")
+      .order("created_at",{ascending:false});
+
+  const box =
+    document.getElementById("users");
+
+  if(error){
+    box.innerHTML =
+      `<div class="red">${error.message}</div>`;
+    return;
+  }
+
+  document.getElementById("userCount").textContent =
+    data.length;
+
+  if(!data.length){
+    box.innerHTML =
+      `<div class="muted">No users found.</div>`;
+    return;
+  }
+
+  box.innerHTML = data.map(user => `
+
+    <div class="match">
+
+      <b>${escapeHTML(user.username)}</b>
+
+      <span class="badge">
+        ${escapeHTML(user.role)}
+      </span>
+
+      <div class="muted">
+        ${escapeHTML(user.full_name || "")}
       </div>
-    </div>
 
-    <div class="card">
-      <h3>📋 Demo Bets</h3>
-      <div id="bets">
-        <div class="empty">No demo bets placed yet.</div>
+      <div class="${user.status==="active"?"green":"red"}">
+        ${escapeHTML(user.status)}
       </div>
+
     </div>
 
-  </main>
+  `).join("");
+}
 
-  <footer>
-    This is a virtual demonstration only. No real-money betting or payments.
-  </footer>
 
-  <script>
-    let balance = 10000;
+async function loadMatches(){
 
-    function placeDemoBet(team, odds) {
+  const {data,error} =
+    await client
+      .from("matches")
+      .select("*")
+      .order("created_at",{ascending:false});
 
-      const stake = 100;
+  const box =
+    document.getElementById("matches");
 
-      if (balance < stake) {
-        alert("Demo wallet balance is insufficient.");
-        return;
-      }
+  if(error){
+    box.innerHTML =
+      `<div class="red">${error.message}</div>`;
+    return;
+  }
 
-      balance -= stake;
+  document.getElementById("matchCount").textContent =
+    data.length;
 
-      document.getElementById("balance").textContent =
-        "₹" + balance.toLocaleString("en-IN");
+  if(!data.length){
+    box.innerHTML =
+      `<div class="muted">No matches yet.</div>`;
+    return;
+  }
 
-      const bets = document.getElementById("bets");
+  box.innerHTML = data.map(match => `
 
-      if (bets.querySelector(".empty")) {
-        bets.innerHTML = "";
-      }
+    <div class="match">
 
-      const possibleReturn = stake * odds;
+      <b>
+        ${escapeHTML(match.team_a)}
+        vs
+        ${escapeHTML(match.team_b)}
+      </b>
 
-      const bet = document.createElement("div");
+      <div class="muted">
+        Status: ${escapeHTML(match.status)}
+      </div>
 
-      bet.className = "bet";
+      <div>
+        ${escapeHTML(match.score_a || "0/0")}
+        —
+        ${escapeHTML(match.score_b || "0/0")}
+      </div>
 
-      bet.innerHTML = `
-        <b>${team}</b><br>
-        Demo Stake: ₹${stake}<br>
-        Demo Odds: ${odds}<br>
-        Possible Demo Return: ₹${possibleReturn.toFixed(2)}
-      `;
+    </div>
 
-      bets.prepend(bet);
-    }
-  </script>
+  `).join("");
+}
+
+
+async function addMatch(){
+
+  const teamA =
+    document.getElementById("teamA").value.trim();
+
+  const teamB =
+    document.getElementById("teamB").value.trim();
+
+  if(!teamA || !teamB){
+    alert("Dono team names enter karo.");
+    return;
+  }
+
+  const {error} =
+    await client
+      .from("matches")
+      .insert({
+        team_a:teamA,
+        team_b:teamB,
+        status:"upcoming",
+        score_a:"0/0",
+        score_b:"0/0"
+      });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  document.getElementById("teamA").value="";
+  document.getElementById("teamB").value="";
+
+  await loadMatches();
+}
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+client.auth.getSession().then(({data})=>{
+
+  if(data.session){
+    showApp();
+  }
+
+});
+
+</script>
 
 </body>
 </html>
