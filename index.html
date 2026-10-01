@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricket Demo Panel</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1217;
+      color: #fff;
+    }
+
+    header {
+      background: #181d24;
+      padding: 18px;
+      text-align: center;
+      border-bottom: 1px solid #2a3039;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .demo-label {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: #332b12;
+      color: #ffd54a;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 650px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    .card {
+      background: #181d24;
+      border: 1px solid #272d36;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .wallet {
+      text-align: center;
+    }
+
+    .wallet small {
+      color: #9ba3af;
+    }
+
+    .balance {
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 7px;
+    }
+
+    .match-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .muted {
+      color: #9ba3af;
+      font-size: 13px;
+    }
+
+    .teams {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .team {
+      flex: 1;
+      background: #222831;
+      border: 1px solid #343b46;
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .team-name {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .odds {
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 11px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #fff;
+      color: #111;
+    }
+
+    .bet {
+      background: #222831;
+      border-radius: 9px;
+      padding: 12px;
+      margin-top: 9px;
+    }
+
+    .empty {
+      color: #8e96a3;
+      text-align: center;
+      padding: 12px;
+    }
+
+    footer {
+      text-align: center;
+      color: #777f8c;
+      font-size: 11px;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🏏 Cricket Demo Panel</h1>
+    <div class="demo-label">DEMO • NO REAL MONEY</div>
+  </header>
+
+  <main>
+
+    <div class="card wallet">
+      <small>Virtual Demo Wallet</small>
+      <div class="balance" id="balance">₹10,000</div>
+    </div>
+
+    <div class="card">
+      <div class="match-title">🇮🇳 India vs Australia 🇦🇺</div>
+      <div class="muted">Demo Match • T20</div>
+
+      <div class="teams">
+
+        <div class="team">
+          <div class="team-name">India</div>
+          <div class="odds">1.80</div>
+          <button onclick="placeDemoBet('India', 1.80)">
+            Demo Bet
+          </button>
+        </div>
+
+        <div class="team">
+          <div class="team-name">Australia</div>
+          <div class="odds">2.10</div>
+          <button onclick="placeDemoBet('Australia', 2.10)">
+            Demo Bet
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Demo Bets</h3>
+      <div id="bets">
+        <div class="empty">No demo bets placed yet.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    This is a virtual demonstration only. No real-money betting or payments.
+  </footer>
+
+  <script>
+    let balance = 10000;
+
+    function placeDemoBet(team, odds) {
+
+      const stake = 100;
+
+      if (balance < stake) {
+        alert("Demo wallet balance is insufficient.");
+        return;
+      }
+
+      balance -= stake;
+
+      document.getElementById("balance").textContent =
+        "₹" + balance.toLocaleString("en-IN");
+
+      const bets = document.getElementById("bets");
+
+      if (bets.querySelector(".empty")) {
+        bets.innerHTML = "";
+      }
+
+      const possibleReturn = stake * odds;
+
+      const bet = document.createElement("div");
+
+      bet.className = "bet";
+
+      bet.innerHTML = `
+        <b>${team}</b><br>
+        Demo Stake: ₹${stake}<br>
+        Demo Odds: ${odds}<br>
+        Possible Demo Return: ₹${possibleReturn.toFixed(2)}
+      `;
+
+      bets.prepend(bet);
+    }
+  </script>
+
+</body>
+</html>
